@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="bg-primary-gradient py-5" id="userInfo" data-shop="{{ request.user.staff_shop.name }}"
+    data-address="{{ request.user.staff_shop.address }}" data-phone="{{ request.user.phone }}"
+    data-email="{{ request.user.email }}" data-biller="{{ request.user.get_full_name }}">
+    {% csrf_token %}
+    <div class="card m-5">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-8">
+                    <select class="form-control" id="customer">
+                            <option selected value="0">Walk-In Customer</option>
+
+                            {% for c in customers %}
+                            <option value="{{ c.id }}">{{ c.name }}</option>
+                            {% endfor %}
+
+                        </select>
+                    <table class="table text-center mt-5">
+                        <thead class="bg-primary text-white">
+                            <tr>
+                                <th>Product</th>
+                                <th>Quatity</th>
+                                <th>Unit Price</th>
+                                <th>Sub Total</th>
+                                <th>
+                                    <i class="fas fa-trash"></i>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="productRow">
+
+                        </tbody>
+                        <tfoot class="bg-primary text-white">
+                            <tr>
+                                <th>Total Item:</th>
+                                <th id="total_qt">0</th>
+                                <th>Total:</th>
+                                <th id="total" colspan="3">0</th>
+
+                            </tr>
+                            <tr>
+                                <th>Discount:</th>
+                                <th><input class="text-center" id="discount" type="number" value="0" style="width: 70%">
+                                </th>
+                                <th>Amount:</th>
+                                <th id="amount" colspan="3">0</th>
+                            </tr>
+                            <tr>
+                                <th>Pyament In</th>
+                                <th>
+                                    <select id="payment" style="width: 80%">
+                                        <option value="">Select Payment</option>
+                                        {% for p in payments %}
+                                        <option value="{{ p.id }}">{{ p.name }}</option>
+                                        {% endfor %}
+                                        
+                                    </select>
+                                </th>
+                                <th>Total Paid:</th>
+                                <th colspan="2">
+                                    <input type="number" id="total_paid" value="0" class="text-center"
+                                        style="width: 70%">
+                                </th>
+                            </tr>
+                            <tr>
+                                <th></th>
+                                <th></th>
+                                <th>
+                                    <div class="btn btn-danger">Cancel</div>
+                                </th>
+                                <th colspan="2">
+                                    <div class="btn btn-warning" id="paymentBtn">Payment</div>
+                                </th>
+                            </tr>
+                        </tfoot>
+                    </table>
+
+                </div>
+                <div class="col-md-4">
+                    <div class="row">
+                        <div class="col-12">
+                            <select name="category" id="category" class="form-control">
+                                <option value="all">All Categories</option>
+
+                                {% for c in categories %}
+                                <option value="{{ c.id }}">{{ c.name }}</option>
+                                {% endfor %}
+
+                            </select>
+                        </div>
+                        <div class=" col-12 mt-md-2 input-group">
+                            <input type="search" class="form-control" id="search" placeholder="Search for products...">
+                            <div class="input-group-append">
+                                <span class="input-group-text btn btn-primary text-white">
+                                    <i class="fa fa-search"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-4" id="all-product" style='overflow-y:scroll; height:calc(100vh - 300px);'>
+                       
+                        {% for p in products %}
+                        <div class="col-md-6 product" style="cursor:pointer" data-buy="{{ p.purchase_price }}">
+                            <div class="card bg-dark text-white pt-1 px-1">
+                                <span class="category d-none">{{ p.category.id }}</span>
+
+                                {% if p.photo %}
+                                <img src="{{ p.photo.url }}" alt="Product Image" class="img-thumbnail product-image">
+                                {% endif %}
+
+                                <p class="my-1 border-light text-center name" data-id="{{ p.id }}">{{ p.name }}</p>
+                                {% if p.stock == 0 %}
+                                <p class="mb-1">Out of Stock<span
+                                        class="badge badge-danger float-right quantity">{{ p.quantity }}</span></p>
+                                {% else %}
+                                <p class="mb-1">Stock<span
+                                        class="badge badge-primary float-right quantity">{{ p.stock }}</span></p>
+                                {% endif %}
+                                <p class="mb-1">Price<span
+                                        class="badge badge-warning float-right price">{{ p.sell_price }}</span>
+                                </p>
+                            </div>
+                        </div>
+                        {% endfor %}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block extra_js %}
+<script src="{% static 'js/sweetalert.min.js' %}"></script>
+<script src="{% static 'js/page/pos.js' %}"></script>
+{% endblock extra_js %}
+

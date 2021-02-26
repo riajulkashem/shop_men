@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block header_right_button %}
+    {% if permitted_for_add %}
+        <button class="btn btn-primary" id="add_button">
+            Add New {{ page_title|title }}
+        </button>
+    {% endif %}
+{% endblock %}
+{% block content_body %}
+    {% include 'crud_modal.html' %}
+    {% block crud_filter %}
+        <div class="card">
+            <div class="row px-2">
+                <div class="col-md-8">
+                    <form action="" method="GET" class="form-inline py-1 my-auto">
+                        <input type="search" name="search" id="searchbar"
+                               placeholder="Type Here {{ page_title|title }} ID or {{ page_title|title }} Name For Search"
+                               class="form-control mr-2 w-75">
+                    </form>
+                </div>
+                <div class="col-md-4 my-auto">
+                    <h4 class="float-md-right my-auto">Total {{ page_title|title }}: <span
+                            class="badge badge-dark">{{ total_found }} </span></h4>
+                </div>
+            </div>
+        </div>
+    {% endblock %}
+    <div class="table-responsive card">
+        <table class="table">
+            <thead class="thead-dark">
+            {% block thead %}
+                <tr>
+                    <th>SL</th>
+                    {% block th %}
+
+                    {% endblock %}
+                    {% if permitted_for_change or permitted_for_delete %}
+                        <th>Action</th>
+                    {% endif %}
+                </tr>
+            {% endblock %}
+            </thead>
+            <tbody class="infinite-container bg-white">
+            {% block tbody %}
+                {% for obj in object_list %}
+                    <tr id="table_row_{{ object.id }}" class="infinite-item">
+                    <td>{{ object_list.start_index|add:forloop.counter0 }}</td>
+                        {% block td %}
+
+                        {% endblock %}
+                        {% include 'snippets/edit_delete_field.html' %}
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td class="text-center" colspan="5">
+                            <h2>No {{ page_title|title }} Found</h2>
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% endblock %}
+            </tbody>
+            {% if object_list.has_next %}
+                <tr class="text-center bg-primary text-light loading loader-wrapper">
+                    <th colspan="8" class="text-center">
+                        <a class="infinite-more-link" href="{{ url_params }}{{ object_list.next_page_number }}">
+                            <span class="h2 text-white mr-5">Loading More</span> <span
+                                class="spinner text-white spinner-border"></span>
+                        </a>
+                    </th>
+                </tr>
+            {% endif %}
+        </table>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'js/page/crud.js' %}"></script>
+{% endblock %}

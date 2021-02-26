@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block header_right_button %}
+{% endblock %}
+{% block content_body %}
+    <div class="card">
+        <div class="card-body">
+            {% crispy form %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+{% if page_title == 'Sale' %}
+    <script src="{% static 'js/page/sale_form.js' %}"></script>
+    {% else %}
+    <script src="{% static 'js/page/purchase_form.js' %}"></script>
+{% endif %}
+    
+{% endblock %}

@@ -1,0 +1,18 @@
+{% if permitted_for_change or permitted_for_delete %}
+    <td>
+        {% if permitted_for_change %}
+            <a href="#" data-id="{{ obj.id }}"
+               class="badge badge-primary edit">
+                <i class="fa fa-edit"></i> Edit
+            </a>
+        {% endif %}
+
+        {% if permitted_for_delete %}
+            <a href="#" data-name="{{ obj }}" data-id="{{ obj.id }}"
+               class="badge badge-danger delete" data-toggle="modal"
+               data-target="#delete_modal">
+                <i class="fa fa-trash"></i> Delete
+            </a>
+        {% endif %}
+    </td>
+{% endif %}

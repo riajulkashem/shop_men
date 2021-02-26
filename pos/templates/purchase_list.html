@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block header_right_button %}
+    {% if permitted_for_add %}
+        <a href="{% url 'pos:purchase_create' %}" class="btn btn-primary">
+            Add New {{ page_title|title }}
+        </a>
+    {% endif %}
+{% endblock %}
+{% block content_body %}
+    {% block crud_filter %}
+        <div class="card">
+            <div class="row px-2">
+                <div class="col-md-8">
+                    <form action="" method="GET"
+                          class="form-inline py-1 my-auto">
+                        <input type="search" name="search" id="searchbar"
+                               placeholder="Type Here {{ page_title|title }} ID or {{ page_title|title }} Name For Search"
+                               class="form-control mr-2 w-75">
+                    </form>
+                </div>
+                <div class="col-md-4 my-auto">
+                    <h4 class="float-md-right my-auto">
+                        Total {{ page_title|title }}: <span
+                            class="badge badge-dark">{{ total_found }} </span>
+                    </h4>
+                </div>
+            </div>
+        </div>
+    {% endblock %}
+    <div class="table-responsive card">
+        <table class="table">
+            <thead class="thead-dark">
+            {% block thead %}
+                <tr>
+                    <th>SL</th>
+                    {% block th %}
+                        <th>Supplier</th>
+                        <th>Date</th>
+                        <th>Reference</th>
+                        <th>Sub Total</th>
+                        <th>Charge</th>
+                        <th>Discount</th>
+                        <th>Total</th>
+                        <th>Paid</th>
+                        <th>Due</th>
+                    {% endblock %}
+                    {% if permitted_for_change or permitted_for_delete %}
+                        <th>Action</th>
+                    {% endif %}
+                </tr>
+            {% endblock %}
+            </thead>
+            <tbody class="infinite-container bg-white">
+            {% block tbody %}
+                {% for obj in object_list %}
+                    <tr id="table_row_{{ object.id }}" class="infinite-item">
+                        <td>{{ object_list.start_index|add:forloop.counter0 }}</td>
+                        {% block td %}
+                            <td>{{ obj.people.name }}</td>
+                            <td>{{ obj.date }}</td>
+                            <td>{{ obj.reference }}</td>
+                            <td>{{ obj.sub_total }}</td>
+                            <td>{{ obj.charge_total }}</td>
+                            <td>{{ obj.discount_total }}</td>
+                            <td>{{ obj.grand_total }}</td>
+                            <td>{{ obj.paid }}</td>
+                            <td>{{ obj.due }}</td>
+                        {% endblock %}
+                        {% if permitted_for_change or permitted_for_delete %}
+                            <td>
+                                <a href=" {% url 'pos:purchase_invoice' obj.pk %}"
+                                       class="badge badge-success">
+                                        <i class="fa fa-file"></i> Invoice
+                                    </a>
+                                {% if permitted_for_change %}
+                                    <a href="
+{% url 'pos:purchase_update' obj.pk %}"
+                                       class="badge badge-primary">
+                                        <i class="fa fa-edit"></i> Edit
+                                    </a>
+                                {% endif %}
+
+                                {% if permitted_for_delete %}
+                                    <a href="#" data-name="{{ obj }}"
+                                       data-id="{{ obj.id }}"
+                                       class="badge badge-danger delete"
+                                       data-toggle="modal"
+                                       data-target="#delete_modal">
+                                        <i class="fa fa-trash"></i> Delete
+                                    </a>
+                                    <div class="modal fade text-left" id="delete_modal" tabindex="-1" role="dialog" aria-labelledby="Delete Modal"
+     style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-top" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-primary white">
+                <h5 class="modal-title">Delete Confirmation</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">{% csrf_token %}
+                <h2>Are you sure you want to delete {{ obj }} "<span id="obj_name"></span>"</h2>
+            </div>
+            <div class="modal-footer">
+                <button id="confirm_delete" type="submit" class="btn btn-danger float-right">
+                    Confirm Delete
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+                                {% endif %}
+                            </td>
+                        {% endif %}
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td class="text-center" colspan="5">
+                            <h2>No {{ page_title|title }} Found</h2>
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% endblock %}
+            </tbody>
+            {% if object_list.has_next %}
+                <tr class="text-center bg-primary text-light loading loader-wrapper">
+                    <th colspan="8" class="text-center">
+                        <a class="infinite-more-link" href="
+
+                                {{ url_params }}{{ object_list.next_page_number }}">
+                            <span class="h2 text-white mr-5">Loading More</span>
+                            <span
+                                    class="spinner text-white spinner-border"></span>
+                        </a>
+                    </th>
+                </tr>
+            {% endif %}
+        </table>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'js/page/crud.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block content_body %}
+
+    <div class="card">
+        <div class="card-header">
+            <h2 class="text-center">
+                {{ request.user.get_full_name }}'s Profile Update
+            </h2>
+        </div>
+    <div class="card-body">
+        {% crispy form %}
+    </div>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'js/page/crud.js' %}"></script>
+{% endblock %}

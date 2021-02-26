@@ -1,0 +1,31 @@
+{% extends 'crud.html' %}
+{% block th %}
+    <th>Created</th>
+    <th>Photo</th>
+    <th>Name</th>
+    <th>Email</th>
+    <th>Address</th>
+    <th>Due</th>
+    <th>Phone</th>
+    <th>Update</th>
+{% endblock %}
+{% block td %}
+    <td>{{ obj.created }}</td>
+    <td>
+        {% if obj.photo %}
+            <div class="avatar avatar-sm">
+                <img src="{{ obj.photo.url }}" alt="{{ obj.name }}">
+            </div>
+        {% else %}
+            <div class="avatar">
+                <span class="avatar-content">RK</span>
+            </div>
+        {% endif %}
+    </td>
+    <td>{{ obj.name }}</td>
+    <td>{{ obj.email }}</td>
+    <td>{{ obj.address }}</td>
+    <td>{{ obj.due }}</td>
+    <td>{{ obj.phone }}</td>
+    <td>{{ obj.updated }}</td>
+{% endblock %}

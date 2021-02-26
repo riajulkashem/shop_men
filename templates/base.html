@@ -1,0 +1,166 @@
+{% load static tags %}
+<!DOCTYPE html>
+<html class="loading" lang="en" data-textdirection="ltr">
+<!-- BEGIN: Head-->
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+    <meta name="description"
+          content="EduCom is a school management system for managing school and collage maintained by Royal IT and developed by Riajul Kashem">
+    <meta name="keywords"
+          content="school management, educom, riajul, riajul kashem, royalit">
+    <meta name="author" content="PIXINVENT">
+    <title>{% block title %}{{ page_title|title }}{% endblock %} | EduCom</title>
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'images/ico/favicon.ico' %}">
+    {#    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600" rel="stylesheet">#}
+
+    <!-- BEGIN: Vendor CSS-->
+    <link rel="stylesheet" type="text/css" href="{% static 'vendors/css/vendors.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'vendors/css/toastr.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'vendors/css/select2.min.css' %}">
+    <!-- END: Vendor CSS-->
+
+    <!-- BEGIN: Theme CSS-->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap-extended.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/components.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/toastr.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/semi-dark-layout.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/flatpickr.min.css' %}">
+
+    <!-- BEGIN: Page CSS-->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/core/menu/menu-types/vertical-menu.min.css' %}">
+    <!-- END: Page CSS-->
+
+    {% block extra_css %}{% endblock %}
+
+    <!-- BEGIN: Custom CSS-->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/colors.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    <!-- END: Custom CSS-->
+
+</head>
+<!-- END: Head-->
+
+<!-- BEGIN: Body-->
+{% block body %}
+    <body class="vertical-layout vertical-menu-modern semi-dark-layout 2-columns  navbar-floating footer-static  "
+          data-open="click"
+          data-user="{% if request.user.name %}{{ request.user.name }}{% else %}Riajul Kashem{% endif %}"
+          data-menu="vertical-menu-modern" data-col="2-columns" data-layout="semi-dark-layout">
+
+    <!-- BEGIN: Header-->
+    <div class="content-overlay"></div>
+    <div class="header-navbar-shadow"></div>
+
+    {% include 'core/nav.html' %}
+
+
+    <!-- BEGIN: Main Menu-->
+    {% include 'sidebar/sidebar_main.html' %}
+    <!-- END: Main Menu-->
+
+    <!-- BEGIN: Content-->
+
+    <div class="app-content content">
+        {% block content %}
+            <div class="content-overlay"></div>
+            <div class="header-navbar-shadow"></div>
+
+            <div class="content-wrapper">
+                {% block content_wrapper %}
+                    <div class="content-header row">
+                        {% block content_header %}
+                            <div class="content-header-left col-md-9 col-sm-6 col-12 mb-2">
+                                <div class="row breadcrumbs-top">
+                                    <div class="col-12">
+                                        <h2 class="content-header-title float-left mb-0">
+                                            {{ page_title|title }}
+                                        </h2>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="content-header-right text-md-right col-sm-6 col-md-3 col-12">
+                                <div class="form-group breadcrum-right">
+                                    {% block header_right_button %}{% endblock %}
+                                </div>
+                            </div>
+                        {% endblock %}
+                    </div>
+                    <div class="content-body">
+                        {% block content_body %}
+                            <!-- Description -->
+                            <section id="description" class="card">
+                                <div class="card-header">
+                                    <h4 class="card-title">Description</h4>
+                                </div>
+                                <div class="card-content">
+                                    <div class="card-body">
+                                        <div class="card-text">
+                                            <p>2 Columns layout is the most common and popular layout, it has a
+                                                navigation
+                                                with content
+                                                section. This layout
+                                                use the common navbar and footer sections, however you can add
+                                                customized
+                                                header or
+                                                footer on page level.</p>
+                                            <div class="alert alert-warning" role="alert">
+                                                Vuexy Admin Template default layout is 2 columns. If you do not define
+                                                pageConfig block
+                                                on page or template
+                                                level, it will consider 2 columns by default.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                            <!--/ Description -->
+                        {% endblock %}
+                    </div>
+                {% endblock %}
+            </div>
+        {% endblock %}
+    </div>
+    <!-- END: Content-->
+
+    <div class="sidenav-overlay"></div>
+    <div class="drag-target"></div>
+    <!-- BEGIN: Footer-->
+    {% include 'core/footer.html' %}
+    <!-- END: Footer-->
+
+
+    {% include 'core/scripts.html' %}
+    {% if messages %}
+        {% for message in messages %}
+            <script type=text/javascript>
+                toastr.{{ message.tags }}('{{ message }}', '{{ request.user.institute }}')
+            </script>
+        {% endfor %}
+    {% endif %}
+    <script>
+        function add_image_viewer(id) {
+            let div = $('#div_' + id)
+            let img_url = div.find('a').attr('href')
+            div.find('a').remove()
+            div.find('span.text-break').append(
+                '<img src="' + img_url + '" width="60px" hight="auto">')
+
+        }
+
+        document.formHasErrors = {% if form.errors %}true; {% else %} false; {% endif %}
+        console.log('Form Has Error {{ form.errors }}')
+        $('select').select2({
+            dropdownParent: $('#crud_modal')
+        });
+    </script>
+    <script src="{% static 'js/jquery.formset.min.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+    </body>
+{% endblock %}
+<!-- END: Body-->
+
+</html>

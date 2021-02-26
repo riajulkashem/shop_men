@@ -1,0 +1,23 @@
+{% extends 'crud.html' %}
+{% block th %}
+    <th>Created</th>
+    <th>Name</th>
+    <th>Logo</th>
+    <th>Store Bio</th>
+    <th>Capital</th>
+    <th>Current Cash</th>
+    <th>Admin Limit</th>
+    <th>Staff Limit</th>
+    <th>Update</th>
+{% endblock %}
+{% block td %}
+    <td>{{ obj.created }}</td>
+    <td>{{ obj.name }}</td>
+    <td>{{ obj.logo }}</td>
+    <td>{{ obj.store_bio }}</td>
+    <td>{{ obj.capital }}</td>
+    <td>{{ obj.current_cash }}</td>
+    <td>{{ obj.admin_limit }}</td>
+    <td>{{ obj.staff_limit }}</td>
+    <td>{{ obj.updated }}</td>
+{% endblock %}

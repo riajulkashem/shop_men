@@ -1,0 +1,15 @@
+{% extends 'crud.html' %}
+{% block th %}
+    <th>Created</th>
+    <th>Name</th>
+    <th>Unit</th>
+    <th>Description</th>
+    <th>Update</th>
+{% endblock %}
+{% block td %}
+    <td>{{ obj.created }}</td>
+    <td>{{ obj.name }}</td>
+    <td>{{ obj.unit }}</td>
+    <td>{{ obj.description }}</td>
+    <td>{{ obj.updated }}</td>
+{% endblock %}

@@ -1,0 +1,43 @@
+<div class="modal fade text-left" id="crud_modal" tabindex="-1" role="dialog" aria-labelledby="CRUD Modal"
+     style="display: none;" aria-hidden="true">
+    <div class="modal-dialog {% if modal_size %}{{ modal_size }}{% else %}modal-lg{% endif %} modal-dialog-top" role="document">
+        <div class="modal-content" id="modal-content">
+            <div class="modal-header bg-primary white">
+                <h5 class="modal-title" id="myModalLabel160">
+                    <span class="prefix_text">Add New</span> {{ model_name|title }}
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <form action="{% block modal_form_action_url %} {% endblock %}"
+                  id="crud_form" method="POST" enctype="multipart/form-data">
+                <div class="modal-body" id="crud_form_body pb-5">
+                    {% include 'snippets/form.html' with form=form %}
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade text-left" id="delete_modal" tabindex="-1" role="dialog" aria-labelledby="Delete Modal"
+     style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-top" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-primary white">
+                <h5 class="modal-title">Delete Confirmation</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h2>Are you sure you want to delete {{ obj }} "<span id="obj_name"></span>"</h2>
+            </div>
+            <div class="modal-footer">
+                <button id="confirm_delete" type="submit" class="btn btn-danger float-right">
+                    Confirm Delete
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,8 @@
+ {% load crispy_forms_tags %}
+{% if form %}
+    {% crispy form %}
+{#    {{ form }}#}
+{% endif %}
+{% if submit %}
+    {{ submit|safe }}
+{% endif %}

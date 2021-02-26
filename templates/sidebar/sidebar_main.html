@@ -1,0 +1,219 @@
+{% load static variable_tags %}
+<div class="main-menu menu-fixed menu-light menu-accordion menu-shadow"
+     data-scroll-to-active="true">
+    <div class="navbar-header">
+        <ul class="nav navbar-nav flex-row">
+            <li class="nav-item mr-auto">
+                <a class="navbar-brand align-items-baseline" href="/">
+                    {% if request.user.staff_shop.logo %}
+                    <div class="brand-logo">
+                        <img src="{{ request.user.staff_shop.logo.url }}" class="brand-logo">
+                    </div>
+                    {% endif %}
+                    <h2 class="brand-text mb-0">
+                        {{ request.user.staff_shop.name }}
+                    </h2>
+
+
+                </a>
+            </li>
+            <li class="nav-item nav-toggle"><a
+                    class="nav-link modern-nav-toggle pr-0"
+                    data-toggle="collapse"><i
+                    class="feather icon-x d-block d-xl-none font-medium-4 primary toggle-icon"></i><i
+                    class="toggle-icon feather icon-disc font-medium-4 d-none d-xl-block primary"
+                    data-ticon="icon-disc"></i></a></li>
+        </ul>
+    </div>
+    <div class="shadow-bottom"></div>
+    <div class="main-menu-content">
+        <ul class="navigation navigation-main" id="main-menu-navigation"
+            data-menu="menu-navigation">
+            <li class=" nav-item"><a href="/"><i class="feather
+            icon-home"></i>
+                <span class="menu-title" data-i18n="Dashboard">Dashboard</span></a>
+            </li>
+
+
+            <li class=" nav-item">
+                <a href="#">
+                    <i class="fa fa-book"></i>
+                    <span class="menu-title">SHOP</span>
+                </a>
+                <ul class="menu-content">
+                    {% if perms.pos.view_shopping %}
+                    <li>
+                        <a href="{% url 'pos:sale_list' %}">
+                            <span class="menu-item">Sale List</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                    {% if perms.pos.view_shopping %}
+                    <li>
+                        <a href="{% url 'pos:purchase_list' %}">
+                            <span class="menu-item">Purchase List</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </li>
+
+            <li class=" nav-item">
+                <a href="#">
+                    <i class="fa fa-money"></i>
+                    <span class="menu-title">Account</span>
+                </a>
+                <ul class="menu-content">
+                    {% if perms.pos.view_cashin %}
+                    <li>
+                        <a href="{% url 'pos:cashin' %}">
+                            <span class="menu-item">Cash In History</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                    {% if perms.pos.view_cashout %}
+                    <li>
+                        <a href="{% url 'pos:cashout' %}">
+                            <span class="menu-item">Cash Out History</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                    {% if perms.pos.view_expanse %}
+                    <li>
+                        <a href="{% url 'pos:expanse' %}">
+                            <span class="menu-item">Expanse History</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </li>
+
+
+            <li class=" nav-item">
+                <a href="#">
+                    <i class="fa fa-cubes"></i>
+                    <span class="menu-title">Product</span>
+                </a>
+                <ul class="menu-content">
+                    {% if perms.product.view_brand %}
+                    <li>
+                        <a href="{% url 'product:brand' %}">
+                            <span class="menu-item">Brand List</span>
+                        </a>
+                    </li>
+                    {% endif %}
+
+                    {% if perms.product.view_category %}
+                    <li>
+                        <a href="{% url 'product:category' %}">
+                            <span class="menu-item">Category List</span>
+                        </a>
+                    </li>
+                    {% endif %}
+
+
+                    {% if perms.product.view_product %}
+                    <li class="">
+                        <a href="{% url 'product:product' %}">
+                            <span class="menu-item">Product List</span>
+                        </a>
+                    </li>
+                    {% endif %}
+
+                </ul>
+            </li>
+
+            <li class="nav-item">
+                <a href="#">
+                    <i class="fa fa-users"></i>
+                    <span class="menu-title">People</span>
+                </a>
+                <ul class="menu-content">
+                    {% if perms.people.view_people %}
+                    <li class="">
+                        <a href="{% url 'people:customer' %}">
+                            <span class="menu-item">Customer List</span>
+                        </a>
+                    </li>
+                    {% endif %}
+
+
+                    {% if perms.people.view_people %}
+                    <li class="">
+                        <a href="{% url 'people:supplier' %}">
+                            <span class="menu-item">Supplier List </span>
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </li>
+
+            <li class=" nav-item">
+                <a href="#">
+                    <i class="fa fa-cogs"></i>
+                    <span class="menu-title">Administration</span>
+                </a>
+                <ul class="menu-content">
+                    {% if request.user.id == request.user.staff_shop.owner_id %}
+                    {% if perms.user.view_user %}
+                    <li class="nav-item">
+                        <a href="{% url 'user:user' %}">
+                            <span class="menu-title">User List</span>
+                        </a>
+                    </li>
+                    {% endif %}
+
+                    {% if perms.pos.view_shop %}
+                    <li class="nav-item">
+                        <a href="{% url 'pos:shop' %}">
+                            <span class="menu-title">Shop List</span>
+                        </a>
+                    </li>
+                    {% endif %}
+
+                    {% endif %}
+                    {% if perms.pos.change_shop and request.user.staff_shop_id %}
+                    <li class="nav-item">
+                        <a href="{% url 'pos:shop_settings' pk=request.user.staff_shop_id %}">
+                            <span class="menu-title">Settings</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                    {% if request.user.is_superuser %}
+                    <li class="nav-item">
+                        <a href="{% url 'pos:shop' %}">
+                            <span class="menu-title">Shop List</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'user:user' %}">
+                            <span class="menu-title">User List</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </li>
+
+            <li class=" nav-item">
+                <a href="#">
+                    <i class="fa fa-files"></i>
+                    <span class="menu-title">Report</span>
+                </a>
+                <ul class="menu-content">
+                    {% if perms.pos.view_shopping %}
+                    <li>
+                        <a href="">
+                            <span class="menu-item">Sale Report</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="">
+                            <span class="menu-item">Purchase Report</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
