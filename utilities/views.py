@@ -9,6 +9,8 @@ from django.urls import reverse_lazy
 from django.views.generic.detail import SingleObjectTemplateResponseMixin
 from django.views.generic.edit import ModelFormMixin, ProcessFormView
 
+from utilities.methods import get_model_foreignkey_fields, \
+    get_model_manytomany_fields, render_pdf
 from utilities.views_helper_methods import create_form, update_form, \
     search_query
 
@@ -25,8 +27,12 @@ class CRUDView(
     submit = True
     assign_shop = True
     has_update_url = False
+    pdf_response = False
+    pdf_template = None
+    pdf_file_name = None
     paginated_by = 10
     queryset = None
+
 
     def get_success_url(self):
         if self.success_url:
@@ -85,6 +91,15 @@ class CRUDView(
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
+        if self.pdf_response:
+            if self.pdf_template is None or self.pdf_file_name is None:
+                raise ValueError('PDF File Name And Template Name Must Be Set')
+            return render_pdf(
+                request=request,
+                template=self.pdf_template,
+                context=self.get_context_data(),
+                file_name=self.pdf_file_name
+            )
         if request.GET.get('page'):
             return super(CRUDView, self).get(request, *args, **kwargs)
         if request.is_ajax():
@@ -168,12 +183,15 @@ class CRUDView(
     def get_queryset(self):
         queryset = cache.get(self.get_cache_key())
         if queryset:
-            print('queryset returning from cache')
             return self.get_filtered_queryset(queryset)
         if self.queryset:
             queryset = self.queryset
         else:
-            queryset = self.model.objects.all()
+            queryset = self.model.objects.select_related(
+                *get_model_foreignkey_fields(self.model)
+            ).prefetch_related(
+                *get_model_manytomany_fields(self.model)
+            ).all()
         cache.set(self.get_cache_key(), queryset, 600)
         return self.get_filtered_queryset(queryset.order_by('updated'))
 

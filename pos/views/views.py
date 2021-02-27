@@ -1,5 +1,6 @@
 import json
 
+from django.core.cache import cache
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import transaction
 from django.http import JsonResponse, HttpResponseRedirect
@@ -89,6 +90,7 @@ def shopping_context_data(self, sale=True, **kwargs):
 
 
 def shopping_form_valid(self, form, sale=True):
+    cache.delete(self.get_cache_key())
     context = self.get_context_data()
     products = context['products']
     items = context['products'].cleaned_data
@@ -115,6 +117,8 @@ class SaleView(CRUDView):
     template_name = 'sale_list.html'
     success_url = reverse_lazy('pos:sale_list')
     form_class = SaleForm
+    pdf_template = 'invoice.html'
+    pdf_file_name = 'purchase_invoice'
 
     def get_success_url(self):
         return reverse_lazy('pos:sale_invoice', kwargs={'pk': self.object.id})
@@ -135,7 +139,7 @@ class SaleView(CRUDView):
         if 'update' in request.path:
             self.template_name = 'shopping_form.html'
         if 'invoice' in request.path:
-            self.template_name = 'invoice.html'
+            self.pdf_response = True
 
         return super(SaleView, self).get(request, *args, **kwargs)
 
@@ -148,6 +152,9 @@ class PurchaseView(CRUDView):
     template_name = 'purchase_list.html'
     success_url = reverse_lazy('pos:purchase_list')
     form_class = PurchaseForm
+    pdf_template = 'invoice.html'
+    pdf_file_name = 'purchase_invoice'
+
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -170,7 +177,7 @@ class PurchaseView(CRUDView):
         if 'update' in request.path:
             self.template_name = 'shopping_form.html'
         if 'invoice' in request.path:
-            self.template_name = 'invoice.html'
+            self.pdf_response = True
 
         return super(PurchaseView, self).get(request, *args, **kwargs)
 

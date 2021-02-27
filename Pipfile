@@ -13,6 +13,7 @@ djangorestframework = "*"
 pillow = "*"
 psycopg2 = "*"
 flake8 = "*"
+weasyprint = "*"
 
 [dev-packages]
 

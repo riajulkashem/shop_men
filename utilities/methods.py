@@ -1,13 +1,15 @@
 import re
+import tempfile
 from collections import OrderedDict
 from json import loads, dumps
 
-from django.contrib.auth.models import Group, Permission
 from django.core.cache import cache
+from django.db import models
+from django.http import HttpResponse
+from django.template.loader import render_to_string
 from django.urls import path
-from rest_framework import status
 
-from utilities.variables import SUPER_ADMIN
+from weasyprint import HTML
 
 
 def is_valid_phone_number(phone: str):
@@ -62,75 +64,6 @@ def check_permitted(request, obj, self):
     return True
 
 
-def create_group_permission(group_permissions: dict):
-    for group_name in group_permissions:
-
-        # Get or create group
-        group, created = Group.objects.get_or_create(name=group_name)
-
-        # Loop models in group
-        for model_cls in group_permissions[group_name]:
-            # Loop permissions in group/model
-            for perm_index, perm_name in \
-                    enumerate(group_permissions[group_name][model_cls]):
-
-                # Generate permission name as Django would generate it
-                codename = perm_name + "_" + model_cls._meta.model_name
-
-                try:
-                    # Find permission object and add to group
-                    perm = Permission.objects.get(codename=codename)
-                    group.permissions.add(perm)
-                    # print("Adding " + codename
-                    #       + " to group "
-                    #       + group.__str__())
-                except Permission.DoesNotExist:
-                    pass
-                # print(codename + " not found")
-
-
-def assign_user(user):
-    if user.role.name != SUPER_ADMIN:
-        filtered_group = Group.objects.filter(name=user.role.name)
-        if not filtered_group.exists() or \
-                not filtered_group[0].permissions.exists():
-            # if user.role.name == ADMIN:
-            #     create_group_permission(ADMIN_GROUP_PERMISSIONS)
-            # elif user.role.name == MASTER_ADMIN:
-            #     create_group_permission(MASTER_GROUP_PERMISSIONS)
-            # TODO: Implement Permission assign
-            #  func for ACCOUNTANT, STUDENT, Teacher
-            permission_group = Group.objects.get(name=user.role.name)
-            permission_group.user_set.add(user)
-        else:
-            permission_group = Group.objects.get(name=user.role.name)
-            permission_group.user_set.add(user)
-
-    return None
-
-
-def process_data(request, model):
-    data = request.data
-    ids = [data[i].pop('id') for i in range(len(data))]
-    object_list = model.objects.filter(id__in=ids)
-    batch_size = len(object_list)
-    if len(data) == batch_size:
-        ln = length = len(data)
-        fields = []
-        for hr in object_list:
-            dict_item = data[length - ln]
-            for i in range(len(dict_item)):
-                setattr(hr, list(dict_item.keys())[i],
-                        dict_item[list(dict_item.keys())[i]])
-                fields.append(list(dict_item.keys())[i])
-            ln -= 1
-        model.objects.bulk_update(object_list, fields=fields,
-                                  batch_size=batch_size)
-        return [status.HTTP_200_OK,
-                {'success': 'All Info Updated Successfully'}]
-    return [status.HTTP_400_BAD_REQUEST, {'error': 'Invalid Data Format'}]
-
-
 def print_test_response(input_ordered_dict: OrderedDict) -> None:
     print(dumps(loads(dumps(input_ordered_dict)), indent=4))
 
@@ -166,3 +99,54 @@ def get_queryset_from_cache(model):
 
 def get_request_redirect(request, url):
     return url + '?' + str(request.get_raw_uri()).split('?')[1]
+
+
+def render_pdf(request, template, context, file_name: str):
+    html_string = render_to_string(
+        template, context, request=request
+    )
+    html = HTML(
+        string=html_string,
+        base_url=request.build_absolute_uri()
+    )
+    result = html.write_pdf()
+
+    # Creating http response
+
+    response = HttpResponse(content_type='application/pdf;')
+    response[
+        'Content-Disposition'] = 'inline; filename=' + file_name + '.pdf'
+    response['Content-Transfer-Encoding'] = 'binary'
+    with tempfile.NamedTemporaryFile(delete=True) as output:
+        output.write(result)
+        output.flush()
+        output = open(output.name, 'rb')
+        response.write(output.read())
+    return response
+
+
+def get_model_fields(model):
+    fields = []
+    for field in model._meta.get_fields():
+        if isinstance(field, models.ForeignKey):
+            fields.append(field.name + '_id')
+        else:
+            fields.append(field.name)
+    return fields
+
+
+def get_model_foreignkey_fields(model):
+    fields = []
+    for field in model._meta.get_fields():
+        if isinstance(field, models.ForeignKey):
+            fields.append(field.name)
+    return fields
+
+
+def get_model_manytomany_fields(model):
+    fields = []
+    for field in model._meta.get_fields():
+        if isinstance(field, models.ManyToManyField) \
+                or isinstance(field, models.ManyToManyRel):
+            fields.append(field.name)
+    return fields

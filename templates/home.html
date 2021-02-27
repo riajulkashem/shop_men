@@ -1,65 +1,347 @@
 {% extends 'base.html' %}
 {% load static humanize %}
 {% block extra_css %}
-    <link rel="stylesheet" href="{% static 'css/core/apexcharts.css' %}">
-    <link rel="stylesheet" href="{% static 'css/core/dashboard-analytics.css' %}">
+<link rel="stylesheet" href="{% static 'css/core/apexcharts.css' %}">
+<link rel="stylesheet" href="{% static 'css/core/dashboard-analytics.css' %}">
 {% endblock %}
 {% block content_wrapper %}
-    <div class="content-header row">
-    </div>
-    <div class="content-body">
-        <section id="dashboard-analytics">
-            <div class="row">
-                <div class="col-lg-6 col-md-6 col-sm-12">
-                    {% include 'dashbaord/user_status.html' %}
-                </div>
-                <div class="col-lg-6 col-md-6 col-sm-12">
-                    <div class="card">
-                        <table class="table">
-                            <tr>
-                                <th>Pending Contract</th>
-                                <th>Running Contract</th>
-                                <th>Completed Contract</th>
-                            </tr>
-                            <tr>
-                                <td>43</td>
-                                <td>65</td>
-                                <td>100</td>
-                            </tr>
-                        </table>
-                        <div class="card-content">
-                            <div id="orders-received-chart"></div>
+<div class="content-header row">
+</div>
+<div class="content-body">
+    <section id="dashboard-analytics">
+        <div class="row">
+            <div class="col-md-6 col-md-6 col-sm-12">
+                <div class="card">
+                    <div class="card-content">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div id="avg-session-chart"
+                                         style="min-height: 100px;">
+                                        <div id="apexchartsqj3rfxekj"
+                                             class="apexcharts-canvas apexchartsqj3rfxekj light"
+                                             style="width: 219px; height: 50px;">
+
+                                            <div class="apexcharts-legend"></div>
+                                            <div class="apexcharts-tooltip light"
+                                                 style="left: 76.8141px; top: -5px;">
+                                                <div class="apexcharts-tooltip-series-group active"
+                                                     style="display: flex;">
+                                                    <span class="apexcharts-tooltip-marker"
+                                                          style="background-color: rgb(115, 103, 240);"></span>
+                                                    <div class="apexcharts-tooltip-text"
+                                                         style="font-family: Helvetica, Arial, sans-serif; font-size: 12px;">
+                                                        <div class="apexcharts-tooltip-y-group">
+                                                            <span class="apexcharts-tooltip-text-label">Sessions: </span><span
+                                                                class="apexcharts-tooltip-text-value">225</span>
+                                                        </div>
+                                                        <div class="apexcharts-tooltip-z-group">
+                                                            <span class="apexcharts-tooltip-text-z-label"></span><span
+                                                                class="apexcharts-tooltip-text-z-value"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row avg-sessions pt-50">
+                                <div class="col-6">
+                                    <p class="mb-0">Goal: $100000</p>
+                                    <div class="progress progress-bar-primary mt-25">
+                                        <div class="progress-bar"
+                                             role="progressbar"
+                                             aria-valuenow="50"
+                                             aria-valuemin="50"
+                                             aria-valuemax="100"
+                                             style="width:50%"></div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <p class="mb-0">Users: 100K</p>
+                                    <div class="progress progress-bar-warning mt-25">
+                                        <div class="progress-bar"
+                                             role="progressbar"
+                                             aria-valuenow="60"
+                                             aria-valuemin="60"
+                                             aria-valuemax="100"
+                                             style="width:60%"></div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <p class="mb-0">Retention: 90%</p>
+                                    <div class="progress progress-bar-danger mt-25">
+                                        <div class="progress-bar"
+                                             role="progressbar"
+                                             aria-valuenow="70"
+                                             aria-valuemin="70"
+                                             aria-valuemax="100"
+                                             style="width:70%"></div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <p class="mb-0">Duration: 1yr</p>
+                                    <div class="progress progress-bar-success mt-25">
+                                        <div class="progress-bar"
+                                             role="progressbar"
+                                             aria-valuenow="90"
+                                             aria-valuemin="90"
+                                             aria-valuemax="100"
+                                             style="width:90%"></div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-4 col-12">
-                    <div class="card">
-                        <div class="card-header d-flex justify-content-between pb-0">
-                            <h4>Product Wise Budget</h4>
+            <div class="col-md-6 col-md-6 col-sm-12">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-header d-flex align-items-start pb-0">
+                                <div>
+                                    <h2 class="text-bold-700 mb-0">86%</h2>
+                                    <p>CURRENT CASH</p>
+                                </div>
+                                <div class="avatar bg-rgba-success p-50 m-0">
+                                    <div class="avatar-content">
+                                        <i class="fa fa-money text-success font-medium-5"></i>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="card-content">
-                            {% include 'dashbaord/top_customers.html' %}
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-header d-flex align-items-start pb-0">
+                                <div>
+                                    <h2 class="text-bold-700 mb-0">86%</h2>
+                                    <p>Today Sold</p>
+                                </div>
+                                <div class="avatar bg-rgba-success p-50 m-0">
+                                    <div class="avatar-content">
+                                        <i class="feather icon-bar-chart-2 text-success font-medium-5"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-header d-flex align-items-start pb-0">
+                                <div>
+                                    <h2 class="text-bold-700 mb-0">86%</h2>
+                                    <p>Today Purchased</p>
+                                </div>
+                                <div class="avatar bg-rgba-warning p-50 m-0">
+                                    <div class="avatar-content">
+                                        <i class="fa fa-cubes text-warning font-medium-5"></i>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-8 col-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4 class="card-title">Budget Distributed By Executive Engineers</h4>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-header d-flex align-items-start pb-0">
+                                <div>
+                                    <h2 class="text-bold-700 mb-0">86%</h2>
+                                    <p>Today Cash In</p>
+                                </div>
+                                <div class="avatar bg-rgba-success p-50 m-0">
+                                    <div class="avatar-content">
+                                        <i class="fa fa-money text-success font-medium-5"></i>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="card-content">
-                            {% include 'dashbaord/top_selling_products.html'  %}
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-header d-flex align-items-start pb-0">
+                                <div>
+                                    <h2 class="text-bold-700 mb-0">86%</h2>
+                                    <p>Today Cash Out</p>
+                                </div>
+                                <div class="avatar bg-rgba-warning p-50 m-0">
+                                    <div class="avatar-content">
+                                        <i class="feather icon-minus text-warning font-medium-5"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-header d-flex align-items-start pb-0">
+                                <div>
+                                    <h2 class="text-bold-700 mb-0">86%</h2>
+                                    <p>Today Expanse</p>
+                                </div>
+                                <div class="avatar bg-rgba-warning p-50 m-0">
+                                    <div class="avatar-content">
+                                        <i class="fa fa-minus text-warning font-medium-5"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header d-flex align-items-start pb-0">
+                                <div>
+                                    <h2 class="text-bold-700 mb-0">86%</h2>
+                                    <p>Total Sale Due</p>
+                                </div>
+                                <div class="avatar bg-rgba-warning p-50 m-0">
+                                    <div class="avatar-content">
+                                        <i class="fa fa-minus text-warning font-medium-5"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header d-flex align-items-start pb-0">
+                                <div>
+                                    <h2 class="text-bold-700 mb-0">86%</h2>
+                                    <p>Total Purchase Due</p>
+                                </div>
+                                <div class="avatar bg-rgba-warning p-50 m-0">
+                                    <div class="avatar-content">
+                                        <i class="fa fa-plus text-warning font-medium-5"></i>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
-    </div>
+        </div>
+        <div class="row text-center">
+            <div class="col-md-4">
+                <div class="card text-center py-2">
+                    <h2>Top 10 Product</h2>
+                </div>
+                <div class="card table-responsive">
+
+                    <table class="table">
+                        <thead class="thead-dark">
+                        <tr>
+                            <th>Name</th>
+                            <th>Photo</th>
+                            <th>Average Sale Per Day</th>
+                            <th>In Stock</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>Oil</td>
+                            <td>
+                                <div class="avatar  avatar-lg">
+                                    <img class="avatar"
+                                         src="https://i.ytimg.com/vi/jAhpgbBYa5c/maxresdefault.jpg"
+                                         alt="">
+                                </div>
+                            </td>
+                            <td>
+                                150 ps
+                            </td>
+                            <td>
+                                1400
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card text-center py-2">
+                    <h2>Top 10 Customer</h2>
+                </div>
+                <div class="card table-responsive">
+
+                    <table class="table">
+                        <thead class="thead-dark">
+                        <tr>
+                            <th>Name</th>
+                            <th>Photo</th>
+                            <th>Average Sold Per Day</th>
+                            <th>Total Sold</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>Oil</td>
+                            <td>
+                                <div class="avatar  avatar-lg">
+                                    <img class="avatar"
+                                         src="https://i.ytimg.com/vi/jAhpgbBYa5c/maxresdefault.jpg"
+                                         alt="">
+                                </div>
+
+                            </td>
+                            <td>
+                                150 ps
+                            </td>
+                            <td>
+                                1400
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card text-center py-2">
+                    <h2>Top 10 Supplier</h2>
+                </div>
+                <div class="card table-responsive">
+                    <table class="table">
+                        <thead class="thead-dark">
+                        <tr>
+                            <th>Name</th>
+                            <th>Photo</th>
+                            <th>Average Purchase Per Week</th>
+                            <th>Total Bought</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>Oil</td>
+                            <td>
+                                <div class="avatar  avatar-lg">
+                                    <img class="avatar"
+                                         src="https://i.ytimg.com/vi/jAhpgbBYa5c/maxresdefault.jpg"
+                                         alt="">
+                                </div>
+                            </td>
+                            <td>
+                                150 ps
+                            </td>
+                            <td>
+                                1400
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
 {% endblock %}
 
 {% block extra_js %}
-    <script src="{% static 'js/apexcharts.min.js' %}"></script>
-    <script src="{% static 'js/dashboard-analytics.js' %}"></script>
+<script src="{% static 'js/apexcharts.min.js' %}"></script>
+<script src="{% static 'js/dashboard-analytics.js' %}"></script>
+
 {% endblock %}

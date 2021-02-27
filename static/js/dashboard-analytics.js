@@ -1,3 +1,11 @@
+/*=========================================================================================
+    File Name: dashboard-analytics.js
+    Description: dashboard analytics page content with Apexchart Examples
+    ----------------------------------------------------------------------------------------
+    Item Name: Vuexy  - Vuejs, HTML & Laravel Admin Dashboard Template
+    Author: PIXINVENT
+    Author URL: http://www.themeforest.net/user/pixinvent
+==========================================================================================*/
 
 $(window).on("load", function () {
 
@@ -14,48 +22,76 @@ $(window).on("load", function () {
   var $white = '#fff';
 
 
-// Customer Chart
-    // -----------------------------
+  // Subscribers Gained Chart starts //
+  // ----------------------------------
 
-    var customerChartoptions = {
-        chart: {
-            type: 'pie',
-            height: 325,
-            dropShadow: {
-                enabled: false,
-                blur: 5,
-                left: 1,
-                top: 1,
-                opacity: 0.2
-            },
-            toolbar: {
-                show: false
-            }
-        },
-        labels: ['New', 'Returning', 'Referrals'],
-        series: [690, 258, 149],
-        dataLabels: {
-            enabled: false
-        },
-        legend: { show: false },
-        stroke: {
-            width: 3
-        },
-        colors: [$primary, $warning, $danger],
-        fill: {
-            type: 'gradient',
-            gradient: {
-                gradientToColors: [$primary_light, $warning_light, $danger_light]
-            }
+  var gainedChartoptions = {
+    chart: {
+      height: 100,
+      type: 'area',
+      toolbar: {
+        show: false,
+      },
+      sparkline: {
+        enabled: true
+      },
+      grid: {
+        show: false,
+        padding: {
+          left: 0,
+          right: 0
         }
-    }
+      },
+    },
+    colors: [$primary],
+    dataLabels: {
+      enabled: false
+    },
+    stroke: {
+      curve: 'smooth',
+      width: 2.5
+    },
+    fill: {
+      type: 'gradient',
+      gradient: {
+        shadeIntensity: 0.9,
+        opacityFrom: 0.7,
+        opacityTo: 0.5,
+        stops: [0, 80, 100]
+      }
+    },
+    series: [{
+      name: 'Subscribers',
+      data: [28, 40, 36, 52, 38, 60, 55]
+    }],
 
-    var customerChart = new ApexCharts(
-        document.querySelector("#customer-chart"),
-        customerChartoptions
-    );
+    xaxis: {
+      labels: {
+        show: false,
+      },
+      axisBorder: {
+        show: false,
+      }
+    },
+    yaxis: [{
+      y: 0,
+      offsetX: 0,
+      offsetY: 0,
+      padding: { left: 0, right: 0 },
+    }],
+    tooltip: {
+      x: { show: false }
+    },
+  }
 
-    customerChart.render();
+  var gainedChart = new ApexCharts(
+    document.querySelector("#subscribe-gain-chart"),
+    gainedChartoptions
+  );
+
+  gainedChart.render();
+
+  // Subscribers Gained Chart ends //
 
 
 
@@ -134,38 +170,53 @@ $(window).on("load", function () {
 
   // Avg Session Chart Starts
   // ----------------------------------
-    var sessionChartoptions = {
-        chart: {
-            type: 'donut',
-            height: 315,
-            toolbar: {
-                show: false
-            }
-        },
-        dataLabels: {
-            enabled: false
-        },
-        series: [58.6, 34.9, 6.5],
-        legend: { show: false },
-        comparedResult: [2, -3, 8],
-        labels: ['Desktop', 'Mobile', 'Tablet'],
-        stroke: { width: 0 },
-        colors: [$primary, $warning, $danger],
-        fill: {
-            type: 'gradient',
-            gradient: {
-                gradientToColors: [$primary_light, $warning_light, $danger_light]
-            }
-        }
+
+  var sessionChartoptions = {
+    chart: {
+      type: 'bar',
+      height: 200,
+      sparkline: { enabled: true },
+      toolbar: { show: false },
+    },
+    states: {
+      hover: {
+        filter: 'none'
+      }
+    },
+    colors: [$label_color, $label_color, $primary, $label_color, $label_color, $label_color],
+    series: [{
+      name: 'Sessions',
+      data: [75, 125, 225, 175, 125, 75, 25]
+    }],
+    grid: {
+      show: false,
+      padding: {
+        left: 0,
+        right: 0
+      }
+    },
+
+    plotOptions: {
+      bar: {
+        columnWidth: '45%',
+        distributed: true,
+        endingShape: 'rounded'
+      }
+    },
+    tooltip: {
+      x: { show: false }
+    },
+    xaxis: {
+      type: 'numeric',
     }
+  }
 
+  var sessionChart = new ApexCharts(
+    document.querySelector("#avg-session-chart"),
+    sessionChartoptions
+  );
 
- var sessionChart = new ApexCharts(
-        document.querySelector("#session-chart"),
-        sessionChartoptions
-    );
-
-    sessionChart.render();
+  sessionChart.render();
 
   // Avg Session Chart ends //
 
