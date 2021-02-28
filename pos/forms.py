@@ -5,6 +5,7 @@ from django import forms
 from django.forms import inlineformset_factory, Textarea, BaseInlineFormSet
 
 from people.models import People
+from product.models import Product
 from pos.models import Shop, Shopping, ShopItem, Payment, CashOut, CashIn, \
     Expanse
 from utilities.custom_layout_object import Formset
@@ -78,6 +79,9 @@ class ShopItemForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop('request', None)
         super(ShopItemForm, self).__init__(*args, **kwargs)
+        self.fields['product'].queryset = Product.objects.filter(
+            shop=self.request.user.staff_shop
+        )
         for field in self.fields:
             if field not in ['tax', 'tax_type']:
                 self.fields[field].widget.attrs['class'] = field
@@ -138,11 +142,10 @@ class SaleForm(forms.ModelForm):
         super(SaleForm, self).__init__(*args, **kwargs)
         self.fields['quantity'].label = ''
         self.fields['paid'].widget.attrs['required'] = True
-        if self.request:
-            self.fields['people'].queryset = People.objects.filter(
-                people_type='customer',
-                shop=self.request.user.staff_shop
-            ).exclude(id=0)
+        self.fields['people'].queryset = People.objects.filter(
+            people_type='customer',
+            shop=self.request.user.staff_shop
+        ).exclude(id=0)
         self.helper = FormHelper()
         self.helper.form_tag = True
         self.helper.layout = Layout(
@@ -271,11 +274,10 @@ class PurchaseForm(forms.ModelForm):
         super(PurchaseForm, self).__init__(*args, **kwargs)
         self.fields['quantity'].label = ''
         self.fields['paid'].widget.attrs['required'] = True
-        if self.request:
-            self.fields['people'].queryset = People.objects.filter(
-                people_type='supplier',
-                shop=self.request.user.staff_shop
-            )
+        self.fields['people'].queryset = People.objects.filter(
+            people_type='supplier',
+            shop=self.request.user.staff_shop
+        )
         self.helper = FormHelper()
         self.helper.form_tag = True
         self.helper.layout = Layout(

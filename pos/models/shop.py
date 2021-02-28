@@ -2,7 +2,7 @@ from django.db import models
 
 from user.models import User
 from utilities.abstract_model import StatusModel
-
+from datetime import datetime
 
 class Shop(StatusModel):
     owner = models.ForeignKey(
@@ -59,3 +59,95 @@ class Shop(StatusModel):
         """
         :return: total sold amount in today
         """
+        date = datetime.today().date()
+        amount = sum(
+            self.shoppings.filter(
+                people__people_type='customer',
+                date__date=date
+            ).values_list('grand_total', flat=True)
+        )
+        return amount
+
+    @property
+    def total_sale_due(self):
+        """
+        :return: total sale due amount
+        """
+        date = datetime.today().date()
+        amount = sum(
+            self.shoppings.filter(
+                people__people_type='customer'
+            ).values_list('due', flat=True)
+        )
+        return amount
+
+    @property
+    def today_purchased(self):
+        """
+        :return: total purchased amount in today
+        """
+        date = datetime.today().date()
+        amount = sum(
+            self.shoppings.filter(
+                people__people_type='supplier',
+                date__date=date
+            ).values_list('grand_total', flat=True)
+        )
+
+        return amount
+
+    @property
+    def total_purchased_due(self):
+        """
+        :return: total purchased due amount
+        """
+        date = datetime.today().date()
+        amount = sum(
+            self.shoppings.filter(
+                people__people_type='supplier'
+            ).values_list('due', flat=True)
+        )
+
+        return amount
+
+    @property
+    def today_cashin(self):
+        """
+        :return: total cash in amount in today
+        """
+        date = datetime.today().date()
+        amount = sum(
+            self.cash_in_history.filter(
+                date__date=date
+            ).values_list('amount', flat=True)
+        )
+
+        return amount
+
+    @property
+    def today_cashout(self):
+        """
+        :return: total cash out amount in today
+        """
+        date = datetime.today().date()
+        amount = sum(
+            self.cash_out_history.filter(
+                date__date=date
+            ).values_list('amount', flat=True)
+        )
+
+        return amount
+
+    @property
+    def today_expanse(self):
+        """
+        :return: total cash out amount in today
+        """
+        date = datetime.today().date()
+        amount = sum(
+            self.expanse_history.filter(
+                date__date=date
+            ).values_list('amount', flat=True)
+        )
+
+        return amount

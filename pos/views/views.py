@@ -62,6 +62,7 @@ class ExpanseCRUDView(CRUDView):
 
 def shopping_context_data(self, sale=True, **kwargs):
     data = {}
+    form_kwargs = {'request': self.request}
     if sale:
         data['page_title'] = "Sale"
     else:
@@ -69,20 +70,20 @@ def shopping_context_data(self, sale=True, **kwargs):
     if self.request.POST:
         if self.object:
             data['products'] = ProductUpdateFormSet(
-                self.request.POST, user=self.request.user,
-                instance=self.object
+                self.request.POST, form_kwargs=form_kwargs,
+                instance=self.object,
             )
         else:
             data['products'] = ProductFormSet(
-                self.request.POST, user=self.request.user
+                self.request.POST, form_kwargs=form_kwargs
             )
     else:
         if self.object:
             data['products'] = ProductUpdateFormSet(
-                user=self.request.user, instance=self.object
+                form_kwargs=form_kwargs, instance=self.object
             )
         else:
-            data['products'] = ProductFormSet(user=self.request.user)
+            data['products'] = ProductFormSet(form_kwargs=form_kwargs)
     for form in data['products']:
         for field in form.fields:
             form.fields[field].label = ''

@@ -2,7 +2,6 @@ from django.db import models
 
 from people.models import People
 from pos.models import Shop
-from pos.models.payment import PaymentType, Tax, ChargeType
 from product.models import Product
 from utilities.abstract_model import StatusModel, TimeStampedModel
 
@@ -41,7 +40,7 @@ class Shopping(StatusModel):
                                        null=True)
     quantity = models.IntegerField()
     other_charge_type = models.ForeignKey(
-        ChargeType, on_delete=models.PROTECT,
+        'pos.ChargeType', on_delete=models.PROTECT,
         null=True, blank=True
     )
     other_charge = models.FloatField(null=True, blank=True)
@@ -58,7 +57,7 @@ class Shopping(StatusModel):
     date = models.DateTimeField()
     reference = models.CharField(max_length=100, null=True, blank=True)
     payment_type = models.ForeignKey(
-        PaymentType, on_delete=models.PROTECT,
+        'pos.PaymentType', on_delete=models.PROTECT,
         null=True
     )
 
@@ -82,7 +81,7 @@ class ShopItem(TimeStampedModel):
         ('inclusive', 'Inclusive'),
         ('exclusive', 'Exclusive'),
     )
-    product = models.ForeignKey(Product, on_delete=models.PROTECT)
+    product = models.ForeignKey(Product, on_delete=models.PROTECT, related_name='shoppings')
     quantity = models.IntegerField()
     price = models.FloatField()
     total = models.FloatField()
@@ -93,7 +92,7 @@ class ShopItem(TimeStampedModel):
         blank=True
     )
     tax = models.ForeignKey(
-        Tax,
+        'pos.Tax',
         on_delete=models.PROTECT,
         related_name='shopping_products',
         null=True,

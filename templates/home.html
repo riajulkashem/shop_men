@@ -49,7 +49,7 @@
                             <hr>
                             <div class="row avg-sessions pt-50">
                                 <div class="col-6">
-                                    <p class="mb-0">Goal: $100000</p>
+                                    <p class="mb-0">Target Proffit: Not Implemented</p>
                                     <div class="progress progress-bar-primary mt-25">
                                         <div class="progress-bar"
                                              role="progressbar"
@@ -60,7 +60,7 @@
                                     </div>
                                 </div>
                                 <div class="col-6">
-                                    <p class="mb-0">Users: 100K</p>
+                                    <p class="mb-0">Customer: {{ request.user.staff_shop.people.count }}</p>
                                     <div class="progress progress-bar-warning mt-25">
                                         <div class="progress-bar"
                                              role="progressbar"
@@ -71,7 +71,7 @@
                                     </div>
                                 </div>
                                 <div class="col-6">
-                                    <p class="mb-0">Retention: 90%</p>
+                                    <p class="mb-0">Supplier: {{ request.user.staff_shop.people.count }}</p>
                                     <div class="progress progress-bar-danger mt-25">
                                         <div class="progress-bar"
                                              role="progressbar"
@@ -82,7 +82,7 @@
                                     </div>
                                 </div>
                                 <div class="col-6">
-                                    <p class="mb-0">Duration: 1yr</p>
+                                    <p class="mb-0">Total Profit: Not Implemented</p>
                                     <div class="progress progress-bar-success mt-25">
                                         <div class="progress-bar"
                                              role="progressbar"
@@ -118,22 +118,30 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td>Oil</td>
+                        {% for product in product_list %}
+                            <tr>
+                            <td>{{ product.name }}</td>
                             <td>
-                                <div class="avatar  avatar-lg">
+                            {% if product.photo %}
+                                <div class="avatar  avatar-md">
                                     <img class="avatar"
-                                         src="https://i.ytimg.com/vi/jAhpgbBYa5c/maxresdefault.jpg"
-                                         alt="">
+                                         src="{{ product.photo.url }}"
+                                         alt="{{ product.name }}">
                                 </div>
+                                {% endif %}
                             </td>
                             <td>
-                                150 ps
-                            </td>
+                                Not Implemented
+                            </td> 
                             <td>
-                                1400
+                                {{ product.stock }}
                             </td>
                         </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="5" class="text-center"> No Data Found </td>
+                            </tr>
+                        {% endfor %}
                         </tbody>
                     </table>
                 </div>
@@ -149,28 +157,35 @@
                         <tr>
                             <th>Name</th>
                             <th>Photo</th>
-                            <th>Average Sold Per Day</th>
+                            <th>Average Bought Per Week</th>
                             <th>Total Sold</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td>Oil</td>
+                        {% for customer in customer_list %}
+                            <tr>
+                            <td>{{ customer.name }}</td>
                             <td>
-                                <div class="avatar  avatar-lg">
+                            {% if customer.photo %}
+                                <div class="avatar  avatar-md">
                                     <img class="avatar"
-                                         src="https://i.ytimg.com/vi/jAhpgbBYa5c/maxresdefault.jpg"
-                                         alt="">
+                                         src="{{ customer.photo.url }}"
+                                         alt="{{ customer.name }}">
                                 </div>
-
+                                {% endif %}
                             </td>
                             <td>
-                                150 ps
-                            </td>
+                                Not Implemented
+                            </td> 
                             <td>
-                                1400
+                                {{ customer.shppings.count }}
                             </td>
                         </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="5" class="text-center"> No Data Found </td>
+                            </tr>
+                        {% endfor %}
                         </tbody>
                     </table>
                 </div>
@@ -190,22 +205,30 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td>Oil</td>
+                       {% for supplier in supplier_list %}
+                            <tr>
+                            <td>{{ supplier.name }}</td>
                             <td>
-                                <div class="avatar  avatar-lg">
+                            {% if supplier.photo %}
+                                <div class="avatar  avatar-md">
                                     <img class="avatar"
-                                         src="https://i.ytimg.com/vi/jAhpgbBYa5c/maxresdefault.jpg"
-                                         alt="">
+                                         src="{{ supplier.photo.url }}"
+                                         alt="{{ supplier.name }}">
                                 </div>
+                                {% endif %}
                             </td>
                             <td>
-                                150 ps
-                            </td>
+                                Not Implemented
+                            </td> 
                             <td>
-                                1400
+                                {{ supplier.shppings.count }}
                             </td>
                         </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="5" class="text-center"> No Data Found </td>
+                            </tr>
+                        {% endfor %}
                         </tbody>
                     </table>
                 </div>
