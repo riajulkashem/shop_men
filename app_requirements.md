@@ -34,3 +34,9 @@
 ##Report
 - [ ] Date Range Wise Sale/Purchase Report
 - [x] Sale/Purchase Invoice
+
+
+##Deploy
+- [ ] Configure Docker
+- [ ] Configure CLI/CD
+- [ ] Configure Jenkins
