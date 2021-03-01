@@ -1,0 +1,89 @@
+name: SHOP_MEN_CLI
+
+# https://docs.github.com/en/actions/reference/events-that-trigger-workflows#example-using-multiple-events-with-activity-types-or-configuration
+# Trigger only on push and pull_request, but only for main branch
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+env:
+  DB_NAME: postgres
+  DB_USER: postgres
+  DB_PASS: postgres
+
+jobs:
+  build:
+    # https://docs.github.com/en/actions/reference/virtual-environments-for-github-hosted-runners#supported-runners-and-hardware-resources
+    runs-on: ubuntu-latest
+    # runs-on: matrix.os
+    # Strategies disabled due to GitHub monthly minutes limitations.
+    # strategy:
+    #  matrix:
+    #    os: [ubuntu-18.04, ubuntu-20.04]
+    #    python-version: [3.6, 3.7, 3.8]
+    #    postgres-version: [11.8, 12.3]
+    services:
+      postgres:
+        # https://hub.docker.com/_/postgres?tab=description
+        # image: postgres:matrix.postgres-version-alpine
+        image: postgres:12-alpine
+        env:
+          POSTGRES_DB: $DB_NAME
+          POSTGRES_USER: $DB_USER
+          POSTGRES_PASSWORD: $DB_PASS
+        ports:
+          - 5432:5432
+        # needed because the postgres container does not provide a healthcheck
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+    steps:
+      # https://github.com/marketplace/actions/checkout
+      - uses: actions/checkout@v2
+      # https://github.com/marketplace/actions/setup-python
+      # - name: setup python matrix.python-version
+      - name: setup python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+          # python-version: matrix.python-version
+      # install rabbitmq for celery
+      - name: setup rabbitmq
+        uses: nijel/rabbitmq-action@v1.0.0
+      # install package prerequisites, such as psycopg2
+      - name: install prerequisites
+        run: sudo apt install python-dev libpq-dev
+      # install project dependencies from requirements file
+      - name: install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      # setup project, make directories, copy local_settings
+      - name: configure project
+        run: |
+          mkdir -p logs && mkdir -p media/uploads
+          cp examples/local_settings.example project_name/local_settings.py
+      # initialize project with makemigrations and migrate
+      - name: run migrations
+        env:
+          DB_NAME: $DB_NAME
+          DB_USER: $DB_USER
+          DB_PASS: $DB_PASS
+        run: |
+          python manage.py wait_for_db
+          python manage.py migrate --noinput
+      # run project tests with coverage report, linting with flake8
+      - name: run tests
+        env:
+          DB_NAME: $DB_NAME
+          DB_USER: $DB_USER
+          DB_PASS: $DB_PASS
+        run: |
+          celery worker -A project_name -l info &
+          coverage run manage.py test
+          coverage xml -o coverage.xml
+          coverage report
+          flake8

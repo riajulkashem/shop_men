@@ -1,0 +1,47 @@
+; ==================================
+;  project_name daphne supervisor
+; ==================================
+
+[fcgi-program:project_name-daphne]
+; TCP socket used by Nginx backend upstream
+socket=tcp://0.0.0.0:8000
+
+; Directory where your site's project files are located
+directory=/opt/project_name
+
+; If supervisord is run as the root user, switch users to this UNIX user account before doing any processing.
+user=centos
+
+; Each process needs to have a separate socket file, so we use process_num
+command=/opt/project_name/venv/bin/daphne -u /opt/project_name/daphne%(process_num)d.sock --fd 0 --access-log - --proxy-headers project_name.asgi:application
+
+; Number of processes to startup, roughly the number of CPUs you have
+numprocs=2
+
+; Give each process a unique name so they can be told apart
+process_name=project_name-daphne%(process_num)d
+
+; Automatically start and recover processes
+autostart=true
+autorestart=true
+
+; Choose where you want your log to go
+stdout_logfile=/opt/project_name/logs/daphne.log
+redirect_stderr=true
+
+; The total number of seconds which the program needs to stay running after
+; a startup to consider the start successful.
+startsecs=10
+
+; Need to wait for currently executing tasks to finish at shutdown.
+; Increase this if you have very long running tasks.
+stopwaitsecs = 600
+
+; When resorting to send SIGKILL to the program to terminate it
+; send SIGKILL to its whole process group instead,
+; taking care of its children as well.
+killasgroup=true
+
+; if your broker is supervised, set its priority higher
+; so it starts first
+;priority=1000
