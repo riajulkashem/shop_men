@@ -251,6 +251,7 @@ class Profile(
     updated = models.DateTimeField(
         _('Last Updated'), auto_now=True, null=True
     )
+    
 
     @property
     def age(self):
@@ -276,4 +277,6 @@ def create_or_update_profile(sender, instance, created, **kwargs):
         # logger.debug(  # prints class and function name
         #     f"{_getframe().f_code.co_name} Creating {instance}'s profile"
         # )
+        instance.set_password(instance.pin)
+        instance.save()
         Profile.objects.get_or_create(user=instance)

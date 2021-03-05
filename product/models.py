@@ -17,10 +17,13 @@ class Category(StatusModel):
     shop = models.ForeignKey('pos.Shop', on_delete=models.PROTECT,
                              related_name='categories')
     name = models.CharField(max_length=100, unique=True)
-    unit = models.CharField(max_length=50, unique=True)
+    unit = models.CharField(max_length=50)
     description = models.TextField()
 
     def __str__(self): return self.name
+
+    class Meta:
+        unique_together = ['shop', 'name']
 
 
 class Product(StatusModel):
