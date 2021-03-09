@@ -8,7 +8,8 @@ WORKDIR /usr/src/shop_men
 # install psycopg2 dependencies
 RUN apk update \
     && apk --no-cache add --virtual build-dependencies \
-     postgresql-dev gcc python3-dev musl-dev
+     postgresql-dev gcc python3-dev musl-dev \
+     jpeg-dev zlib-dev libffi-dev cairo-dev pango-dev gdk-pixbuf-dev
 
 # set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
