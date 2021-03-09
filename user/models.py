@@ -251,7 +251,6 @@ class Profile(
     updated = models.DateTimeField(
         _('Last Updated'), auto_now=True, null=True
     )
-    
 
     @property
     def age(self):

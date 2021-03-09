@@ -47,4 +47,3 @@ class Expanse(TimeStampedModel):
 
     def __str__(self):
         return f'Cash Out {self.amount}'
-

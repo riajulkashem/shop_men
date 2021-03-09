@@ -4,6 +4,7 @@ from user.models import User
 from utilities.abstract_model import StatusModel
 from datetime import datetime
 
+
 class Shop(StatusModel):
     owner = models.ForeignKey(
         User, on_delete=models.PROTECT,
@@ -50,7 +51,7 @@ class Shop(StatusModel):
                 people__people_type='supplier'
             ).values_list('paid', flat=True)
         )
-        total_income = cash_in_total + cash_sale_total + self.capital
+        total_income = cash_in_total + cash_sale_total + int(self.capital)
         total_expanse = cash_out_total + expanse_total + cash_purchase_total
         return total_income - total_expanse
 
@@ -73,7 +74,6 @@ class Shop(StatusModel):
         """
         :return: total sale due amount
         """
-        date = datetime.today().date()
         amount = sum(
             self.shoppings.filter(
                 people__people_type='customer'
@@ -101,7 +101,6 @@ class Shop(StatusModel):
         """
         :return: total purchased due amount
         """
-        date = datetime.today().date()
         amount = sum(
             self.shoppings.filter(
                 people__people_type='supplier'

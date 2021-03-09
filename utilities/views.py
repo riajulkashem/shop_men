@@ -33,7 +33,6 @@ class CRUDView(
     paginated_by = 10
     queryset = None
 
-
     def get_success_url(self):
         if self.success_url:
             return self.success_url

@@ -156,7 +156,6 @@ class PurchaseView(CRUDView):
     pdf_template = 'invoice.html'
     pdf_file_name = 'purchase_invoice'
 
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         data = shopping_context_data(self, sale=False, **kwargs)
