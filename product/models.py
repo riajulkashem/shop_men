@@ -10,7 +10,8 @@ class Brand(StatusModel):
     name = models.CharField(max_length=100, unique=True)
     description = models.TextField()
 
-    def __str__(self): return self.name
+    def __str__(self):
+        return self.name
 
 
 class Category(StatusModel):
@@ -20,7 +21,8 @@ class Category(StatusModel):
     unit = models.CharField(max_length=50)
     description = models.TextField()
 
-    def __str__(self): return self.name
+    def __str__(self):
+        return self.name
 
     class Meta:
         unique_together = ['shop', 'name']

@@ -22,3 +22,6 @@ RUN pip install -r requirements.txt
 
 # copy project
 COPY . .
+
+# run entrypoint.sh
+ENTRYPOINT ["/usr/src/shop_men/entrypoint.sh"]

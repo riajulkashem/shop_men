@@ -8,19 +8,22 @@ from utilities.abstract_model import StatusModel, TimeStampedModel
 class ChargeType(StatusModel):
     name = models.CharField(max_length=50)
 
-    def __str__(self): return self.name
+    def __str__(self):
+        return self.name
 
 
 class Tax(StatusModel):
     amount = models.IntegerField()
 
-    def __str__(self): return str(self.amount)
+    def __str__(self):
+        return str(self.amount)
 
 
 class PaymentType(StatusModel):
     name = models.CharField(max_length=50)
 
-    def __str__(self): return self.name
+    def __str__(self):
+        return self.name
 
 
 class Payment(TimeStampedModel):
@@ -35,4 +38,5 @@ class Payment(TimeStampedModel):
     date = models.DateTimeField()
     note = models.TextField(null=True, blank=True)
 
-    def __str__(self): return f'{self.people} Paid {self.amount}'
+    def __str__(self):
+        return f'{self.people} Paid {self.amount}'

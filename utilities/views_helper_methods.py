@@ -34,8 +34,8 @@ def update_form(self, request):
     context = {
         'form': form,
         'form_title': 'Update ' + str(self.object),
-        'form_url': '/' + obj.app_label + '/'
-                    + obj.model_name + '/update/' + str(self.object.id) + '/'
+        'form_url': '/' + obj.app_label + '/' +
+                    obj.model_name + '/update/' + str(self.object.id) + '/'
     }
     if self.submit:  # if true add submit button html snippets in context
         context['submit'] = \

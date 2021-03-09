@@ -24,7 +24,8 @@ class Shop(StatusModel):
     admin_limit = models.IntegerField(default=1)
     staff_limit = models.IntegerField(default=0)
 
-    def __str__(self): return self.name
+    def __str__(self):
+        return self.name
 
     @property
     def current_cash(self):
