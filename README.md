@@ -12,6 +12,7 @@ sudo visudo
 riajul ALL=(ALL:ALL) ALL
 
 rsync --archive --chown=riajul:riajul ~/.ssh /home/riajul
+exit
 
 sudo apt-get update
 sudo apt-get install python3-pip python3-dev  libpq-dev postgresql postgresql-contrib nginx python3-cffi libcairo2 libpango-1.0-0 libpangocairo-1.0-0 libgdk-pixbuf2.0-0 libffi-dev shared-mime-info -y
