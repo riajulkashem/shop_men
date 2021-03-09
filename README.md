@@ -43,10 +43,10 @@ GRANT ALL PRIVILEGES ON DATABASE shop_db TO shop_user;
 ## To Host App
 
 ```
-git clone https://github.com/RiajulKashem/riajulportfolio.git
+git clone https://github.com/RiajulKashem/shop_men.git
 
 
-mkvirtualenv venv
+mkvirtualenv config
 pip install -r requirements.txt
 python3 manage.py makemigrations && python3 manage.py migrate
 echo "from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'riajulkashem@gmail.com', 'admin')" | python manage.py shel
