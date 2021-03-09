@@ -11,9 +11,9 @@ django-jazzmin = "*"
 django-prometheus = "*"
 djangorestframework = "*"
 pillow = "*"
-psycopg2 = "*"
 flake8 = "*"
 weasyprint = "*"
+psycopg2-binary = "*"
 
 [dev-packages]
 
