@@ -29,14 +29,14 @@ source ~/.bashrc
 ## Set Up Database
 ```
 sudo -u postgres psql
-CREATE DATABASE shop_db;
-CREATE USER shop_user WITH PASSWORD 'shop_pass';
+CREATE DATABASE shop_men_db;
+CREATE USER shop_men_user WITH PASSWORD 'password';
 
-ALTER ROLE shop_user SET client_encoding TO 'utf8';
-ALTER ROLE shop_user SET default_transaction_isolation TO 'read committed';
-ALTER ROLE shop_user SET timezone TO 'UTC';
+ALTER ROLE shop_men_user SET client_encoding TO 'utf8';
+ALTER ROLE shop_men_user SET default_transaction_isolation TO 'read committed';
+ALTER ROLE shop_men_user SET timezone TO 'UTC';
 
-GRANT ALL PRIVILEGES ON DATABASE shop_db TO shop_user;
+GRANT ALL PRIVILEGES ON DATABASE shop_men_db TO shop_men_user;
 \q
 
 ```
