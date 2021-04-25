@@ -2,13 +2,13 @@
 # https://docs.djangoproject.com/en/3.1/howto/deployment/wsgi/uwsgi/
 
 # the base directory (full path)
-chdir           = /opt/TPL_Django
+chdir           = /opt/shop_men
 
 # Django's wsgi file
 module          = project_name.wsgi
 
 # the virtualenv (full path)
-home            = /opt/TPL_Django/venv
+home            = /opt/shop_men/venv
 
 # process-related settings
 master          = true
@@ -19,7 +19,7 @@ threads         = 2
 enable-threads  = True
 
 # the socket (use the full path to be safe
-socket          = /opt/TPL_Django/uwsgi/uwsgi.sock
+socket          = /opt/shop_men/uwsgi/uwsgi.sock
 
 # ... with appropriate permissions - may be needed
 chmod-socket    = 666

@@ -50,8 +50,8 @@ DB_CONFIG = {
     'ENGINE': os.getenv('DB_ENGINE', 'django.db.backends.postgresql'),
     'HOST': os.getenv('DB_HOST', '127.0.0.1'),
     'PORT': os.getenv('DB_PORT', 5432),
-    'NAME': os.getenv('DB_NAME', 'tpl_django_db'),
-    'USER': os.getenv('DB_USER', 'tpl_django_user'),
+    'NAME': os.getenv('DB_NAME', 'shop_men_db'),
+    'USER': os.getenv('DB_USER', 'shop_men_user'),
     'PASSWORD': os.getenv('DB_PASS', 'Td190588')
 }
 

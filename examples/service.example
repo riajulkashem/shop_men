@@ -1,13 +1,13 @@
 [Unit]
-Description=TPL_Django-uWSGI-instance
+Description=shop_men-uWSGI-instance
 After=network.target postgresql-11.service
 
 [Service]
 User=centos
 Group=nginx
-WorkingDirectory=/opt/TPL_Django
-Environment="PATH=/opt/TPL_Django/venv/bin"
-ExecStart=/opt/TPL_Django/venv/bin/uwsgi --ini /opt/TPL_Django/uwsgi/uwsgi.ini
+WorkingDirectory=/opt/shop_men
+Environment="PATH=/opt/shop_men/venv/bin"
+ExecStart=/opt/shop_men/venv/bin/uwsgi --ini /opt/shop_men/uwsgi/uwsgi.ini
 Restart=always
 KillSignal=SIGQUIT
 Type=notify
